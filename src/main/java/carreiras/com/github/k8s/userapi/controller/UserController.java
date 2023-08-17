@@ -1,5 +1,8 @@
 package carreiras.com.github.k8s.userapi.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +23,10 @@ public class UserController {
     @PostMapping
     public UserDTO create(@RequestBody @Valid UserDTO userDTO) {
         return userService.create(userDTO);
+    }
+
+    @GetMapping
+    public List<UserDTO> findAll() {
+        return userService.findAll();
     }
 }
