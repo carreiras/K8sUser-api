@@ -25,13 +25,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @Setter
     @Column(unique = true)
     private String cpf;
 
-    private String name;
     private String address;
+
     private String email;
+
     private String phoneNumber;
 
     @Setter
