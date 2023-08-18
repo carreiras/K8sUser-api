@@ -35,4 +35,9 @@ public class UserController {
     public UserDTO findById(@PathVariable Long id) {
         return userService.findById(id);
     }
+
+    @GetMapping("/cpf/{cpf}")
+    public UserDTO findByCpf(@PathVariable String cpf) {
+        return userService.findByCpf(cpf);
+    }
 }

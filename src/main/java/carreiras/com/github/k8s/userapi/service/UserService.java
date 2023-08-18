@@ -41,4 +41,10 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
         return convertUserToUserDTO(user);
     }
+
+    public UserDTO findByCpf(String cpf) {
+        User user = userRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+        return convertUserToUserDTO(user);
+    }
 }
