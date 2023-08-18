@@ -1,6 +1,6 @@
 package carreiras.com.github.k8s.userapi.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,5 +38,5 @@ public class User {
     private String phoneNumber;
 
     @Setter
-    private Date registrationDate;
+    private LocalDate registrationDate;
 }

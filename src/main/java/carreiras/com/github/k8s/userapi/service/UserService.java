@@ -38,13 +38,20 @@ public class UserService {
 
     public UserDTO findById(long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException("Pesquisa por Id não retornou resultado. " + USER_NOT_FOUND));
         return convertUserToUserDTO(user);
     }
 
     public UserDTO findByCpf(String cpf) {
         User user = userRepository.findByCpf(cpf)
-                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException("Pesquisa por CPF não retornou resultado. " + USER_NOT_FOUND));
         return convertUserToUserDTO(user);
+    }
+
+    public List<UserDTO> findByNameContainingIgnoreCase(String name) {
+        List<User> users = userRepository.findByNameContainingIgnoreCase(name);
+        return users.stream()
+            .map(Convert::convertUserToUserDTO)
+            .collect(Collectors.toList());
     }
 }

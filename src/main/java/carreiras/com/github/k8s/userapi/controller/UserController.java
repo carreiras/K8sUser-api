@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import carreiras.com.github.k8s.dto.user.UserDTO;
@@ -39,5 +40,10 @@ public class UserController {
     @GetMapping("/cpf/{cpf}")
     public UserDTO findByCpf(@PathVariable String cpf) {
         return userService.findByCpf(cpf);
+    }
+
+    @GetMapping("/search")
+    public List<UserDTO> findByNameContainingIgnoreCase(@RequestParam(required = true) String name) {
+        return userService.findByNameContainingIgnoreCase(name);
     }
 }
