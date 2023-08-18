@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import carreiras.com.github.k8s.dto.user.UserDTO;
 import carreiras.com.github.k8s.userapi.entity.User;
+import carreiras.com.github.k8s.userapi.exception.ResourceNotFoundException;
 import carreiras.com.github.k8s.userapi.repository.UserRepository;
 import carreiras.com.github.k8s.userapi.utility.Convert;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private static final String USER_NOT_FOUND = "Usuário não encontrado.";
 
     private final UserRepository userRepository;
 
@@ -31,5 +34,11 @@ public class UserService {
         return users.stream()
                 .map(Convert::convertUserToUserDTO)
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO findById(long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+        return convertUserToUserDTO(user);
     }
 }
