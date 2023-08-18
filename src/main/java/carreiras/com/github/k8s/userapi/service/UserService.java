@@ -54,4 +54,21 @@ public class UserService {
             .map(Convert::convertUserToUserDTO)
             .collect(Collectors.toList());
     }
+
+    public UserDTO update(Long id, UserDTO userDTO) {
+        findByCpf(userDTO.getCpf());
+
+        User updatedUser = userRepository.findById(id)
+            .map(f -> {
+                User user = convertUserDTOToUser(userDTO);
+                user.setId(id);
+                user.setCpf(f.getCpf());
+                user.setRegistrationDate(f.getRegistrationDate());
+                userRepository.save(user);
+                return user;
+            })
+            .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+
+        return convertUserToUserDTO(updatedUser);
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,5 +46,10 @@ public class UserController {
     @GetMapping("/search")
     public List<UserDTO> findByNameContainingIgnoreCase(@RequestParam(required = true) String name) {
         return userService.findByNameContainingIgnoreCase(name);
+    }
+
+    @PutMapping("/{id}")
+    public UserDTO update(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
+        return userService.update(id, userDTO);
     }
 }
