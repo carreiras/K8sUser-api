@@ -2,6 +2,7 @@ package carreiras.com.github.k8s.userapi.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,5 +52,10 @@ public class UserController {
     @PutMapping("/{id}")
     public UserDTO update(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
         return userService.update(id, userDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 }

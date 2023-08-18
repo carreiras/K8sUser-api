@@ -71,4 +71,13 @@ public class UserService {
 
         return convertUserToUserDTO(updatedUser);
     }
+
+    public void delete(long id) {
+        userRepository.findById(id)
+            .map(f -> {
+                userRepository.delete(f);
+                return Void.TYPE;
+            })
+            .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+    }
 }
