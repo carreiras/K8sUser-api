@@ -1,18 +1,15 @@
 package carreiras.com.github.k8s.userapi.service;
 
-import static carreiras.com.github.k8s.userapi.utility.Convert.convertUserDTOToUser;
-import static carreiras.com.github.k8s.userapi.utility.Convert.convertUserToUserDTO;
+import static carreiras.com.github.k8s.userapi.utility.Convert.convertUserRequestToUser;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import carreiras.com.github.k8s.dto.user.UserDTO;
+import carreiras.com.github.k8s.dto.user.UserRequest;
 import carreiras.com.github.k8s.userapi.entity.User;
 import carreiras.com.github.k8s.userapi.exception.ResourceNotFoundException;
 import carreiras.com.github.k8s.userapi.repository.UserRepository;
-import carreiras.com.github.k8s.userapi.utility.Convert;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,61 +20,52 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserDTO create(UserDTO userDTO) {
-        User user = convertUserDTOToUser(userDTO);
-        User savedUser = userRepository.save(user);
-        return convertUserToUserDTO(savedUser);
+    public User create(UserRequest userRequest) {
+        User user = convertUserRequestToUser(userRequest);
+        return userRepository.save(user);
     }
 
-    public List<UserDTO> findAll() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(Convert::convertUserToUserDTO)
-                .collect(Collectors.toList());
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    public UserDTO findById(long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pesquisa por Id não retornou resultado. " + USER_NOT_FOUND));
-        return convertUserToUserDTO(user);
+    public User findById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Pesquisa por Id não retornou resultado. " + USER_NOT_FOUND));
     }
 
-    public UserDTO findByCpf(String cpf) {
-        User user = userRepository.findByCpf(cpf)
-                .orElseThrow(() -> new ResourceNotFoundException("Pesquisa por CPF não retornou resultado. " + USER_NOT_FOUND));
-        return convertUserToUserDTO(user);
+    public User findByCpf(String cpf) {
+        return userRepository.findByCpf(cpf)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Pesquisa por CPF não retornou resultado. " + USER_NOT_FOUND));
     }
 
-    public List<UserDTO> findByNameContainingIgnoreCase(String name) {
-        List<User> users = userRepository.findByNameContainingIgnoreCase(name);
-        return users.stream()
-            .map(Convert::convertUserToUserDTO)
-            .collect(Collectors.toList());
+    public List<User> findByNameContainingIgnoreCase(String name) {
+        return userRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public UserDTO update(Long id, UserDTO userDTO) {
-        findByCpf(userDTO.getCpf());
+    public User update(Long id, UserRequest userRequest) {
+        findByCpf(userRequest.getCpf());
 
-        User updatedUser = userRepository.findById(id)
-            .map(f -> {
-                User user = convertUserDTOToUser(userDTO);
-                user.setId(id);
-                user.setCpf(f.getCpf());
-                user.setRegistrationDate(f.getRegistrationDate());
-                userRepository.save(user);
-                return user;
-            })
-            .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
-
-        return convertUserToUserDTO(updatedUser);
+        return userRepository.findById(id)
+                .map(f -> {
+                    User user = convertUserRequestToUser(userRequest);
+                    user.setId(id);
+                    user.setCpf(f.getCpf());
+                    user.setRegistrationDate(f.getRegistrationDate());
+                    userRepository.save(user);
+                    return user;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
     }
 
     public void delete(long id) {
         userRepository.findById(id)
-            .map(f -> {
-                userRepository.delete(f);
-                return Void.TYPE;
-            })
-            .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
+                .map(f -> {
+                    userRepository.delete(f);
+                    return Void.TYPE;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
     }
 }

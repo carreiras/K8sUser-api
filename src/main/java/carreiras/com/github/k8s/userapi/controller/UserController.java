@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import carreiras.com.github.k8s.dto.user.UserDTO;
+import carreiras.com.github.k8s.dto.user.UserRequest;
+import carreiras.com.github.k8s.userapi.entity.User;
 import carreiras.com.github.k8s.userapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,33 +26,33 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserDTO create(@RequestBody @Valid UserDTO userDTO) {
-        return userService.create(userDTO);
+    public User create(@RequestBody @Valid UserRequest userRequest) {
+        return userService.create(userRequest);
     }
 
     @GetMapping
-    public List<UserDTO> findAll() {
+    public List<User> findAll() {
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public UserDTO findById(@PathVariable Long id) {
+    public User findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @GetMapping("/cpf/{cpf}")
-    public UserDTO findByCpf(@PathVariable String cpf) {
+    public User findByCpf(@PathVariable String cpf) {
         return userService.findByCpf(cpf);
     }
 
     @GetMapping("/search")
-    public List<UserDTO> findByNameContainingIgnoreCase(@RequestParam(required = true) String name) {
+    public List<User> findByNameContainingIgnoreCase(@RequestParam(required = true) String name) {
         return userService.findByNameContainingIgnoreCase(name);
     }
 
     @PutMapping("/{id}")
-    public UserDTO update(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
-        return userService.update(id, userDTO);
+    public User update(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
+        return userService.update(id, userRequest);
     }
 
     @DeleteMapping("/{id}")
