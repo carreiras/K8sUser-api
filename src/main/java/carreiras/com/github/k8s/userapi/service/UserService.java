@@ -31,14 +31,12 @@ public class UserService {
 
     public User findById(long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Pesquisa por Id não retornou resultado. " + USER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
     }
 
     public User findByCpf(String cpf) {
         return userRepository.findByCpf(cpf)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Pesquisa por CPF não retornou resultado. " + USER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND));
     }
 
     public List<User> findByNameContainingIgnoreCase(String name) {
