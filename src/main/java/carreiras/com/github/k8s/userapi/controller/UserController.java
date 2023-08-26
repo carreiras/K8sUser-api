@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import carreiras.com.github.k8s.dto.user.UserRequest;
-import carreiras.com.github.k8s.userapi.entity.User;
+import carreiras.com.github.k8s.dto.user.UserResponse;
 import carreiras.com.github.k8s.userapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,32 +26,32 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User create(@RequestBody @Valid UserRequest userRequest) {
+    public UserResponse create(@RequestBody @Valid UserRequest userRequest) {
         return userService.create(userRequest);
     }
 
     @GetMapping
-    public List<User> findAll() {
+    public List<UserResponse> findAll() {
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable Long id) {
+    public UserResponse findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @GetMapping("/cpf/{cpf}")
-    public User findByCpf(@PathVariable String cpf) {
+    public UserResponse findByCpf(@PathVariable String cpf) {
         return userService.findByCpf(cpf);
     }
 
     @GetMapping("/search")
-    public List<User> findByNameContainingIgnoreCase(@RequestParam(required = true) String name) {
+    public List<UserResponse> findByNameContainingIgnoreCase(@RequestParam(required = true) String name) {
         return userService.findByNameContainingIgnoreCase(name);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
+    public UserResponse update(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
         return userService.update(id, userRequest);
     }
 
